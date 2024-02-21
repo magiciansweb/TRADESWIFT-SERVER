@@ -41,6 +41,7 @@ async function run() {
   const paymentCollection=client.db('treading-platfrom').collection('payment')
   const usersCollection=client.db('treading-platfrom').collection('user');
   const blogsCollection = client.db("tradeSwiftDB").collection("blogs");
+  const tournamentsCollection = client.db("tournamentsCollection").collection("tournamnetDb");
    // get all blog data api
    app.get('/blogs',async(req,res)=>{
     const result = await blogsCollection.find().toArray();
@@ -202,6 +203,22 @@ app.get("/paymentCount", async (req, res) => {
   const count = await paymentCollection.estimatedDocumentCount();
   res.send({ count });
 });
+
+
+// tournament
+
+app.get('/tournament', async(req,res)=>{
+  const result = await tournamentsCollection.find().toArray();
+  res.send(result);
+})
+
+app.get('/tournament/details/:id' ,async(req,res)=>{
+  const id = req.params.id;
+  const query = { _id : new ObjectId(id) } 
+  
+  const result = await tournamentsCollection.findOne(query);
+  res.send(result);
+})
 
 const trans_id=new ObjectId().toString();
 console.log(trans_id);
